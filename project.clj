@@ -1,4 +1,4 @@
-(defproject io.replikativ/datahike-leveldb "0.0.1-SNAPSHOT"
+(defproject io.replikativ/datahike-leveldb "0.1.0-SNAPSHOT"
   :description "Datahike with LevelDB as data storage."
   :license {:name "Eclipse"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
