@@ -1,6 +1,6 @@
 (ns datahike-leveldb.core
   (:require [datahike.store :refer [empty-store delete-store connect-store release-store scheme->index]]
-            [hitchhiker.konserve :as kons]
+            [hitchhiker.tree.bootstrap.konserve :as kons]
             [konserve-leveldb.core :as kl]
             [superv.async :refer [<?? S]]))
 

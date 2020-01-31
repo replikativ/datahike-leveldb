@@ -3,7 +3,7 @@
     #?(:cljs [cljs.test    :as t :refer-macros [is are deftest testing]]
        :clj  [clojure.test :as t :refer        [is are deftest testing]])
     [datahike.api :as d]
-    [konserve-leveldb.core :refer :all]))
+    [datahike-leveldb.core]))
 
 
 (deftest test-leveldb-store
