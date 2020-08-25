@@ -1,4 +1,4 @@
-# datahike-postgres
+# datahike-leveldb
 
 [Datahike](https://github.com/replikativ/datahike) with [LevelDB](https://github.com/google/leveldb) as data storage.
 
@@ -17,7 +17,7 @@ After including the datahike API and the datahike-leveldb namespace, you can use
             [datahike-leveldb.core]))
 
 ;; Create a config map with postgres as storage medium
-(def config {:backend :level 
+(def config {:backend :level
              :path "/tmp/example-db"})
 
 ;; Alternatively, use an URI as configuration
