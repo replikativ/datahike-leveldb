@@ -7,7 +7,7 @@
   :dependencies [[org.clojure/clojure       "1.10.1"   :scope "provided"]
                  [io.replikativ/konserve-leveldb "0.1.2"]
                  [environ "1.1.0"]
-                 [io.replikativ/datahike "0.3.0"]]
+                 [io.replikativ/datahike "0.3.2-SNAPSHOT"]]
 
   :aliases {"test-clj"     ["run" "-m" "datahike-postgres.test/core_test-clj"]
             "test-all"     ["do" ["clean"] ["test-clj"]]}
