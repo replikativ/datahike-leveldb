@@ -13,6 +13,8 @@
                  [environ "1.2.0"]
                  [io.replikativ/datahike "0.3.2-SNAPSHOT"]]
 
+  :plugins [[lein-cljfmt "0.6.8"]]
+
   :aliases {"test-clj"     ["run" "-m" "datahike-postgres.test/core_test-clj"]
             "test-all"     ["do" ["clean"] ["test-clj"]]}
 
