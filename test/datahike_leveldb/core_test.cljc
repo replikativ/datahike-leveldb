@@ -5,7 +5,7 @@
    [datahike-leveldb.core]))
 
 (def config {:store {:backend :level
-                     :path "/tmp/level-test"}})
+                     :path "./tmp/level-test"}})
 
 (defn config-record-level-fixture [f]
   (d/delete-database config)
