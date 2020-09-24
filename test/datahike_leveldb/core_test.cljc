@@ -1,36 +1,71 @@
 (ns datahike-leveldb.core-test
   (:require
-    #?(:cljs [cljs.test    :as t :refer-macros [is are deftest testing]]
-       :clj  [clojure.test :as t :refer        [is are deftest testing]])
-    [datahike.api :as d]
-    [datahike.store :as ds]
-    [datahike-leveldb.core]))
+   [clojure.test :refer :all]
+   [datahike.api :as d]
+   [datahike-leveldb.core]))
 
+(def config {:store {:backend :level
+                     :path "./tmp/level-test"}})
 
-(deftest test-leveldb-store
-  (let [cfg {:store {:backend :level
-                     :path "/tmp/test-leveldb"}
-             :schema-flexibility :read
-             :keep-history? false}]
+(defn config-record-level-fixture [f]
+  (d/delete-database config)
+  (d/create-database config)
+  (def conn (d/connect config))
+  ;; the first transaction will be the schema we are using
+  (d/transact conn [{:db/ident :name
+                     :db/valueType :db.type/string
+                     :db/cardinality :db.cardinality/one}
+                    {:db/ident :age
+                     :db/valueType :db.type/long
+                     :db/cardinality :db.cardinality/one}])
 
-    (d/delete-database cfg)
+  ;; lets add some data and wait for the transaction
+  (d/transact conn [{:name  "Alice", :age   20}
+                    {:name  "Bob", :age   30}
+                    {:name  "Charlie", :age   40}
+                    {:age 15}])
 
-    (d/create-database cfg)
+  (f))
 
-    (d/delete-database cfg)
+(use-fixtures :once config-record-level-fixture)
 
-    #_(let [_ 
-          conn (d/connect cfg)]
-      (d/transact conn [{ :db/id 1, :name  "Ivan", :age   15 }
-                        { :db/id 2, :name  "Petr", :age   37 }
-                        { :db/id 3, :name  "Ivan", :age   37 }
-                        { :db/id 4, :age 15 }])
+(deftest config-record-level-test
+  ;; search the data
+  (is (= #{[3 "Alice" 20] [4 "Bob" 30] [5 "Charlie" 40]}
+         (d/q '[:find ?e ?n ?a
+                :where
+                [?e :name ?n]
+                [?e :age ?a]]
+              @conn)))
 
-      (is (= (d/q '[:find ?e :where [?e :name]] @conn)
-             #{[3] [2] [1]}))
+  ;; add new entity data using a hash map
+  (d/transact conn {:tx-data [{:db/id 3 :age 25}]})
 
+  ;; if you want to work with queries like in
+  ;; https://grishaev.me/en/datomic-query/,
+  ;; you may use a hashmap
+  (is (= #{[5 "Charlie" 40] [4 "Bob" 30] [3 "Alice" 25]}
+         (d/q {:query '{:find [?e ?n ?a]
+                        :where [[?e :name ?n]
+                                [?e :age ?a]]}
+               :args [@conn]})))
 
-      ;; release connection before existence check
-      (ds/release-store cfg (:store @conn))
+  ;; query the history of the data
+  (is (= #{[20] [25]}
+         (d/q '[:find ?a
+                :where
+                [?e :name "Alice"]
+                [?e :age ?a]]
+              (d/history @conn))))
 
-      (d/delete-database cfg))))
+  ;; you might need to release the connection, e.g. for leveldb
+  (is (= nil (d/release conn)))
+
+  ;; database should exist
+  (is (= true (d/database-exists? config)))
+
+  ;; clean up the database if it is not needed any more
+  (d/delete-database config)
+
+  ;; database should exist
+  (is (= false (d/database-exists? config))))

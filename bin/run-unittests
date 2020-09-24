@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+set -o errexit
+set -o pipefail
+
+mkdir ./tmp/
+
+TIMBRE_LEVEL=':warn' lein test
+
+rm -r ./tmp/
