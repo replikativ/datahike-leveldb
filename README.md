@@ -1,5 +1,14 @@
 # datahike-leveldb
 
+<p align="center">
+<a href="https://clojurians.slack.com/archives/CB7GJAN0L"><img src="https://img.shields.io/badge/clojurians%20slack-join%20channel-blueviolet"/></a>
+<a href="https://clojars.org/io.replikativ/datahike-leveldb"> <img src="https://img.shields.io/clojars/v/io.replikativ/datahike-leveldb.svg" /></a>
+<a href="https://circleci.com/gh/replikativ/datahike-leveldb"><img src="https://circleci.com/gh/replikativ/datahike-leveldb.svg?style=shield"/></a>
+<a href="https://github.com/replikativ/datahike-leveldb/tree/development"><img src="https://img.shields.io/github/last-commit/replikativ/datahike-leveldb/development"/></a>
+<a href="https://versions.deps.co/replikativ/datahike-leveldb" title="Dependencies Status"><img src="https://versions.deps.co/replikativ/datahike-leveldb/status.svg" /></a>
+</p>
+
+
 [Datahike](https://github.com/replikativ/datahike) with [LevelDB](https://github.com/google/leveldb) as data storage.
 
 
@@ -18,10 +27,7 @@ After including the datahike API and the datahike-leveldb namespace, you can use
 
 ;; Create a config map with postgres as storage medium
 (def config {:backend :level
-             :path "/tmp/example-db"})
-
-;; Alternatively, use an URI as configuration
-;; (def config "datahike:level:///tmp/example-db")
+             :path    "/tmp/example-db"})
 
 ;; Create a database at this place, by default configuration we have a strict
 ;; schema and temporal index
