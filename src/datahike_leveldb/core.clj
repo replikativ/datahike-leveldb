@@ -8,7 +8,7 @@
 
 (defmethod empty-store :level [{:keys [path]}]
   (kons/add-hitchhiker-tree-handlers
-    (<?? S (k/new-leveldb-store path))))
+   (<?? S (k/new-leveldb-store path))))
 
 (defmethod delete-store :level [{:keys [path]}]
   (let [store (<?? S (k/new-leveldb-store path))]
