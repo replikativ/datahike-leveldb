@@ -1,4 +1,4 @@
-# datahike-postgres
+# datahike-leveldb
 
 [Datahike](https://github.com/replikativ/datahike) with [LevelDB](https://github.com/google/leveldb) as data storage.
 
